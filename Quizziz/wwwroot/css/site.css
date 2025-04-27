@@ -1,0 +1,118 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+}
+
+/* Quiz app specific styles */
+.question-card {
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.question-header {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.question-body {
+    padding: 1.5rem;
+}
+
+.answer-option {
+    margin-bottom: 0.75rem;
+    padding: 0.75rem;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+    .answer-option:hover {
+        background-color: #f8f9fa;
+    }
+
+    .answer-option.selected {
+        background-color: #e7f5ff;
+        border-color: #4dabf7;
+    }
+
+    .answer-option.correct {
+        background-color: #d4edda;
+        border-color: #28a745;
+    }
+
+    .answer-option.incorrect {
+        background-color: #f8d7da;
+        border-color: #dc3545;
+    }
+
+.quiz-timer {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.quiz-progress {
+    height: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.quiz-results {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.score-display {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.score-circle {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+}
+
+.quiz-card {
+    transition: transform 0.3s;
+    cursor: pointer;
+}
+
+    .quiz-card:hover {
+        transform: translateY(-5px);
+    }

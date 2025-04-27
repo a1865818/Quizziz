@@ -1,0 +1,85 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="text-center mb-5">
+    <h1 class="display-3 fw-bold text-primary mb-4">Welcome to Quiz App</h1>
+    <p class="lead text-secondary">Create, manage, and take quizzes with ease!</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card h-100 shadow border-0">
+            <div class="card-body text-center">
+                <h5 class="card-title text-primary">
+                    <i class="bi bi-question-circle display-4 d-block mb-3 text-primary"></i>
+                    Questions
+                </h5>
+                <p class="card-text text-muted">Create and manage multiple-choice questions for your quizzes.</p>
+                <a asp-page="/Questions/Index" class="btn btn-outline-primary">Manage Questions</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow border-0">
+            <div class="card-body text-center">
+                <h5 class="card-title text-success">
+                    <i class="bi bi-list-check display-4 d-block mb-3 text-success"></i>
+                    Quizzes
+                </h5>
+                <p class="card-text text-muted">Create quizzes by assembling your questions into meaningful groups.</p>
+                <a asp-page="/Quizzes/Index" class="btn btn-outline-success">Manage Quizzes</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow border-0">
+            <div class="card-body text-center">
+                <h5 class="card-title text-danger">
+                    <i class="bi bi-play-circle display-4 d-block mb-3 text-danger"></i>
+                    Take a Quiz
+                </h5>
+                <p class="card-text text-muted">Start a quiz and test your knowledge right away.</p>
+                <a asp-page="/Quizzes/Index" class="btn btn-outline-danger">Start a Quiz</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.LatestQuizzes.Any())
+{
+    <div class="mt-5">
+        <h2 class="mb-4 text-primary fw-bold">Available Quizzes</h2>
+        <div class="row g-4">
+            @foreach (var quiz in Model.LatestQuizzes)
+            {
+                <div class="col-md-4">
+                    <div class="card quiz-card h-100 shadow border-0">
+                        <div class="card-body">
+                            <h5 class="card-title text-dark fw-bold">@quiz.Title</h5>
+                            <p class="card-text text-muted">
+                                @(string.IsNullOrEmpty(quiz.Description)
+                                    ? "No description available"
+                                    : (quiz.Description.Length > 100 ? quiz.Description.Substring(0, 97) + "..." : quiz.Description))
+                            </p>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    <i class="bi bi-question-circle"></i> @quiz.QuizQuestions.Count questions
+                                    @if (quiz.TimeLimit.HasValue)
+                                    {
+                                        <span> • <i class="bi bi-clock"></i> @quiz.TimeLimit min time limit</span>
+                                    }
+                                </small>
+                            </p>
+                        </div>
+                        <div class="card-footer bg-light border-0">
+                            <a asp-page="/Quizzes/Take" asp-route-id="@quiz.Id" class="btn btn-primary w-100">Start Quiz</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

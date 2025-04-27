@@ -1,0 +1,59 @@
+﻿@page
+@model Quizziz.Pages.Quizzes.IndexModel
+@{
+	ViewData["Title"] = "Quizzes";
+}
+
+
+<h1>Quiz Management</h1>
+
+<p>
+    <a asp-page="Create" class="btn btn-primary">Create New Quiz</a>
+</p>
+
+@if (!Model.Quizzes.Any())
+{
+    <div class="alert alert-info">
+        No quizzes have been created yet. <a asp-page="Create">Create your first quiz</a>.
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (var quiz in Model.Quizzes)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card quiz-card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">@quiz.Title</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            @(string.IsNullOrEmpty(quiz.Description)
+                                ? "No description available"
+                                : (quiz.Description.Length > 100 ? quiz.Description.Substring(0, 97) + "..." : quiz.Description))
+                        </p>
+                        <ul class="list-unstyled text-muted">
+                            <li><i class="bi bi-question-circle"></i> @quiz.QuizQuestions.Count questions</li>
+                            @if (quiz.TimeLimit.HasValue)
+                            {
+                                <li><i class="bi bi-clock"></i> @quiz.TimeLimit minute time limit</li>
+                            }
+                            @if (quiz.RandomizeQuestions)
+                            {
+                                <li><i class="bi bi-shuffle"></i> Questions randomized</li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="card-footer bg-transparent d-flex justify-content-between">
+                        <div class="btn-group">
+                            <a asp-page="./Edit" asp-route-id="@quiz.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <a asp-page="./Delete" asp-route-id="@quiz.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </div>
+                        <a asp-page="./Take" asp-route-id="@quiz.Id" class="btn btn-success">Start Quiz</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

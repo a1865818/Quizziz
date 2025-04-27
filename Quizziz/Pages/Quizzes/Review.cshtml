@@ -1,0 +1,82 @@
+﻿@page
+@model Quizziz.Pages.Quizzes.ReviewModel
+@{
+	ViewData["Title"] = "Review Quiz";
+}
+
+
+<div class="container py-4">
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                Review: @Model.QuizAttempt.QuizTitle
+                <span class="float-end">Score: @Model.QuizAttempt.Score%</span>
+            </h4>
+        </div>
+        <div class="card-body">
+            <p>
+                You answered @Model.QuizAttempt.Questions.Count(q => q.IsCorrect) out of @Model.QuizAttempt.Questions.Count questions correctly.
+                @if (Model.QuizAttempt.Duration.HasValue)
+                {
+                    <span>Completed in @Model.QuizAttempt.Duration.Value.ToString(@"hh\:mm\:ss")</span>
+                }
+            </p>
+        </div>
+    </div>
+
+    @foreach (var question in Model.QuizAttempt.Questions)
+    {
+        <div class="question-card">
+            <div class="question-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">@question.QuestionText</h5>
+                @if (question.IsCorrect)
+                {
+                    <span class="badge bg-success">Correct</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">Incorrect</span>
+                }
+            </div>
+            <div class="question-body">
+                @foreach (var answer in question.Answers)
+                {
+                    string answerClass = "";
+                    if (answer.IsSelected && answer.IsCorrect)
+                    {
+                        answerClass = "correct";
+                    }
+                    else if (answer.IsSelected && !answer.IsCorrect)
+                    {
+                        answerClass = "incorrect";
+                    }
+                    else if (!answer.IsSelected && answer.IsCorrect)
+                    {
+                        answerClass = "correct";
+                    }
+
+                    <div class="answer-option @answerClass">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                @if (answer.IsSelected)
+                                {
+                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                }
+                                @answer.AnswerText
+                            </div>
+                            @if (answer.IsCorrect)
+                            {
+                                <span class="badge bg-success">Correct Answer</span>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <div class="mt-4 d-flex justify-content-between">
+        <a asp-page="./Index" class="btn btn-primary">Back to Quizzes</a>
+        <a asp-page="./Take" asp-route-id="@Model.QuizAttempt.QuizId" class="btn btn-success">Try Again</a>
+    </div>
+</div>

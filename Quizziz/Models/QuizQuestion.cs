@@ -1,9 +1,7 @@
 ﻿namespace Quizziz.Models
 {
-    public class QuizQuestion
+    public class QuizQuestion : Base
     {
-        public int Id { get; set; }
-
         public int QuizId { get; set; }
         public Quiz Quiz { get; set; }
 
@@ -12,5 +10,4 @@
 
         public int Order { get; set; }
     }
-
 }

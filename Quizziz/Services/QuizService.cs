@@ -19,7 +19,9 @@ namespace Quizziz.Services
 
         public async Task<IEnumerable<Quiz>> GetAllQuizzesAsync()
         {
-            return await _context.Quizzes.ToListAsync();
+            return await _context.Quizzes.
+                Include(q => q.QuizQuestions).
+                ToListAsync();
         }
 
         public async Task<Quiz> GetQuizByIdAsync(int id)

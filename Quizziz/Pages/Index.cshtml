@@ -5,7 +5,7 @@
 }
 
 <div class="text-center mb-5">
-    <h1 class="display-3 fw-bold text-primary mb-4">Welcome to Quiz App</h1>
+    <h1 class="mb-4">Welcome to Quiz App</h1>
     <p class="lead text-secondary">Create, manage, and take quizzes with ease!</p>
 </div>
 
@@ -51,7 +51,7 @@
 @if (Model.LatestQuizzes.Any())
 {
     <div class="mt-5">
-        <h2 class="mb-4 text-primary fw-bold">Available Quizzes</h2>
+        <h2 class="mb-4">Available Quizzes</h2>
         <div class="row g-4">
             @foreach (var quiz in Model.LatestQuizzes)
             {

@@ -11,5 +11,6 @@ namespace Quizziz.Services
         Task<Question> CreateQuestionAsync(Question question);
         Task UpdateQuestionAsync(Question question);
         Task DeleteQuestionAsync(int id);
+        Task<List<Quiz>> GetQuizzesUsingQuestionAsync(int questionId);
     }
 }

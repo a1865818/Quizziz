@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Quizziz.Data;
 
@@ -11,9 +12,11 @@ using Quizziz.Data;
 namespace Quizziz.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250428150030_FixModelForTime1")]
+    partial class FixModelForTime1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,7 +47,7 @@ namespace Quizziz.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Answers", (string)null);
+                    b.ToTable("Answers");
 
                     b.HasData(
                         new
@@ -142,7 +145,6 @@ namespace Quizziz.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Text")
@@ -154,25 +156,25 @@ namespace Quizziz.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Questions", (string)null);
+                    b.ToTable("Questions");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2025, 4, 28, 15, 0, 29, 503, DateTimeKind.Utc).AddTicks(9800),
                             Text = "What is the capital of France?"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2025, 4, 28, 15, 0, 29, 504, DateTimeKind.Utc).AddTicks(356),
                             Text = "What is 2 + 2?"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2025, 4, 28, 15, 0, 29, 504, DateTimeKind.Utc).AddTicks(358),
                             Text = "Who painted the Mona Lisa?"
                         });
                 });
@@ -186,7 +188,6 @@ namespace Quizziz.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -208,13 +209,13 @@ namespace Quizziz.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Quizzes", (string)null);
+                    b.ToTable("Quizzes");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Test your general knowledge!",
                             RandomizeQuestions = false,
                             Title = "General Knowledge Quiz"
@@ -233,6 +234,7 @@ namespace Quizziz.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("QuestionOrder")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("QuizId")
@@ -248,7 +250,7 @@ namespace Quizziz.Migrations
 
                     b.HasIndex("QuizId");
 
-                    b.ToTable("QuizAttempts", (string)null);
+                    b.ToTable("QuizAttempts");
                 });
 
             modelBuilder.Entity("Quizziz.Models.QuizQuestion", b =>
@@ -274,7 +276,7 @@ namespace Quizziz.Migrations
 
                     b.HasIndex("QuizId");
 
-                    b.ToTable("QuizQuestions", (string)null);
+                    b.ToTable("QuizQuestions");
 
                     b.HasData(
                         new
@@ -328,7 +330,7 @@ namespace Quizziz.Migrations
 
                     b.HasIndex("SelectedAnswerId");
 
-                    b.ToTable("QuizResponses", (string)null);
+                    b.ToTable("QuizResponses");
                 });
 
             modelBuilder.Entity("Quizziz.Models.Answer", b =>
@@ -347,7 +349,7 @@ namespace Quizziz.Migrations
                     b.HasOne("Quizziz.Models.Quiz", "Quiz")
                         .WithMany()
                         .HasForeignKey("QuizId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Quiz");
@@ -377,7 +379,7 @@ namespace Quizziz.Migrations
                     b.HasOne("Quizziz.Models.Question", "Question")
                         .WithMany()
                         .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Quizziz.Models.QuizAttempt", "QuizAttempt")
@@ -388,8 +390,7 @@ namespace Quizziz.Migrations
 
                     b.HasOne("Quizziz.Models.Answer", "SelectedAnswer")
                         .WithMany()
-                        .HasForeignKey("SelectedAnswerId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("SelectedAnswerId");
 
                     b.Navigation("Question");
 

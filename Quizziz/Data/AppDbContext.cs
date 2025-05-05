@@ -1,7 +1,7 @@
-﻿// Data/AppDbContext.cs
+﻿
 using Microsoft.EntityFrameworkCore;
-
 using Quizziz.Models;
+using Quizziz.Data.Configurations;
 
 namespace Quizziz.Data
 {
@@ -23,31 +23,15 @@ namespace Quizziz.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configure relationships
-            modelBuilder.Entity<Answer>()
-                .HasOne(a => a.Question)
-                .WithMany(q => q.Answers)
-                .HasForeignKey(a => a.QuestionId)
-                .OnDelete(DeleteBehavior.Cascade);
+            // Apply all entity configurations
+            modelBuilder.ApplyConfiguration(new QuestionConfiguration());
+            modelBuilder.ApplyConfiguration(new AnswerConfiguration());
+            modelBuilder.ApplyConfiguration(new QuizConfiguration());
+            modelBuilder.ApplyConfiguration(new QuizQuestionConfiguration());
+            modelBuilder.ApplyConfiguration(new QuizAttemptConfiguration());
+            modelBuilder.ApplyConfiguration(new QuizResponseConfiguration());
 
-            modelBuilder.Entity<QuizQuestion>()
-                .HasOne(qq => qq.Quiz)
-                .WithMany(q => q.QuizQuestions)
-                .HasForeignKey(qq => qq.QuizId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<QuizQuestion>()
-                .HasOne(qq => qq.Question)
-                .WithMany()
-                .HasForeignKey(qq => qq.QuestionId)
-                .OnDelete(DeleteBehavior.Restrict); // Preserve questions even if removed from quiz
-
-            modelBuilder.Entity<QuizResponse>()
-                .HasOne(qr => qr.QuizAttempt)
-                .WithMany(qa => qa.Responses)
-                .HasForeignKey(qr => qr.QuizAttemptId)
-                .OnDelete(DeleteBehavior.Cascade);
-
+            // Seed data
             Seed.SeedData(modelBuilder);
         }
     }

@@ -1,11 +1,9 @@
 ﻿@page
 @model Quizziz.Pages.Questions.CreateModel
 @{
-	ViewData["Title"] = "Create Question";
+    ViewData["Title"] = "Create Question";
 }
-
 <h1>Create Question</h1>
-
 <div class="row">
     <div class="col-md-8">
         <form method="post">
@@ -15,10 +13,8 @@
                 <textarea asp-for="QuestionVM.Text" class="form-control" rows="3"></textarea>
                 <span asp-validation-for="QuestionVM.Text" class="text-danger"></span>
             </div>
-
             <h4 class="mt-4 mb-3">Answers</h4>
             <p class="text-muted mb-4">Add 2-4 answer options. Mark one answer as correct.</p>
-
             @for (int i = 0; i < Model.QuestionVM.Answers.Count; i++)
             {
                 <div class="card mb-3">
@@ -29,13 +25,14 @@
                             <span asp-validation-for="QuestionVM.Answers[i].Text" class="text-danger"></span>
                         </div>
                         <div class="form-check">
-                            <input asp-for="QuestionVM.Answers[i].IsCorrect" class="form-check-input" type="radio" name="correctAnswer" value="@i" />
-                            <label asp-for="QuestionVM.Answers[i].IsCorrect" class="form-check-label">This is the correct answer</label>
+                            <input type="radio" name="CorrectAnswerIndex" value="@i" class="form-check-input"
+                            @(Model.QuestionVM.Answers[i].IsCorrect ? "checked" : "") />
+                            <label class="form-check-label">This is the correct answer</label>
+                            <input type="hidden" asp-for="QuestionVM.Answers[i].IsCorrect" />
                         </div>
                     </div>
                 </div>
             }
-
             <div class="form-group mt-4">
                 <button type="submit" class="btn btn-primary">Create</button>
                 <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
@@ -43,27 +40,34 @@
         </form>
     </div>
 </div>
-
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-
     <script>
-        // Ensure only one answer can be marked as correct
         $(document).ready(function() {
-            $('input[name="correctAnswer"]').on('change', function() {
-                const selectedIndex = $(this).val();
+            // Set the first answer as correct by default if none selected
+            if ($('input[name="CorrectAnswerIndex"]:checked').length === 0) {
+                $('input[name="CorrectAnswerIndex"]:first').prop('checked', true);
+                updateHiddenFields();
+            }
 
-                // Update hidden IsCorrect fields
-                $('[id$="IsCorrect"]').val(false);
-                $(`#QuestionVM_Answers_${selectedIndex}__IsCorrect`).val(true);
+            // Update hidden fields when radio selection changes
+            $('input[name="CorrectAnswerIndex"]').on('change', function() {
+                updateHiddenFields();
             });
 
-            // Set the first answer as correct by default
-            if ($('input[name="correctAnswer"]:checked').length === 0) {
-                $('input[name="correctAnswer"]:first').prop('checked', true).trigger('change');
+            function updateHiddenFields() {
+                // Reset all hidden fields to false
+                $('input[id$="__IsCorrect"]').val('false');
+
+                // Set the selected one to true
+                const selectedIndex = $('input[name="CorrectAnswerIndex"]:checked').val();
+                $(`#QuestionVM_Answers_${selectedIndex}__IsCorrect`).val('true');
             }
+
+            // Run once at page load to ensure hidden fields match radio buttons
+            updateHiddenFields();
         });
     </script>
 }

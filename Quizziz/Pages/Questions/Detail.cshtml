@@ -1,0 +1,34 @@
+﻿@page "{id:int}"
+@model Quizziz.Pages.Questions.DetailModel
+@{
+	ViewData["Title"] = "Question Details";
+}
+
+<h1>Question Details</h1>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Question.Text</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Created At: @Model.Question.CreatedAt.ToString("g")</h6>
+        <h6 class="card-subtitle mb-2 text-muted">Updated At: @Model.Question.UpdatedAt?.ToString("g")</h6>
+
+        <h5>Answers</h5>
+        <ul class="list-group">
+            @foreach (var answer in Model.Question.Answers)
+            {
+                <li class="list-group-item">
+                    @answer.Text
+                    @if (answer.IsCorrect)
+                    {
+                        <span class="badge bg-success ms-2">Correct</span>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<p>
+    <a asp-page="./Edit" asp-route-id="@Model.Question.Id" class="btn btn-primary">Edit</a>
+    <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+</p>

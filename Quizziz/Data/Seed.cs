@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using System;
+using Microsoft.EntityFrameworkCore;
 using Quizziz.Models;
 
 namespace Quizziz.Data
@@ -9,9 +11,24 @@ namespace Quizziz.Data
         {
             // Seed Questions
             modelBuilder.Entity<Question>().HasData(
-                new Question { Id = 1, Text = "What is the capital of France?" },
-                new Question { Id = 2, Text = "What is 2 + 2?" },
-                new Question { Id = 3, Text = "Who painted the Mona Lisa?" }
+                new Question
+                {
+                    Id = 1,
+                    Text = "What is the capital of France?",
+                    
+                },
+                new Question
+                {
+                    Id = 2,
+                    Text = "What is 2 + 2?",
+                    
+                },
+                new Question
+                {
+                    Id = 3,
+                    Text = "Who painted the Mona Lisa?",
+             
+                }
             );
 
             // Seed Answers
@@ -37,7 +54,13 @@ namespace Quizziz.Data
 
             // Seed Quizzes
             modelBuilder.Entity<Quiz>().HasData(
-                new Quiz { Id = 1, Title = "General Knowledge Quiz", Description = "Test your general knowledge!" }
+                new Quiz
+                {
+                    Id = 1,
+                    Title = "General Knowledge Quiz",
+                    Description = "Test your general knowledge!",
+                    CreatedAt = new DateTime(2023, 10, 1),
+                }
             );
 
             // Seed QuizQuestions

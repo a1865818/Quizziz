@@ -7,6 +7,7 @@ namespace Quizziz.ViewModels
     {
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Answer text is required")]
         [Display(Name = "Answer Text")]
         public string Text { get; set; }
 

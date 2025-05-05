@@ -18,6 +18,9 @@ namespace Quizziz.Pages.Questions
         [BindProperty]
         public QuestionViewModel QuestionVM { get; set; } = new QuestionViewModel();
 
+        [BindProperty]
+        public int? CorrectAnswerIndex { get; set; }
+
         public void OnGet()
         {
             // Initialize with 4 empty answers
@@ -25,10 +28,25 @@ namespace Quizziz.Pages.Questions
             {
                 QuestionVM.Answers.Add(new AnswerViewModel());
             }
-        }
 
+            if (QuestionVM.Answers.Count > 0)
+            {
+                QuestionVM.Answers[0].IsCorrect = true; // Default the first answer to correct
+            }
+        }
         public async Task<IActionResult> OnPostAsync()
         {
+            // If CorrectAnswerIndex was provided, update the IsCorrect values
+            if (CorrectAnswerIndex.HasValue && CorrectAnswerIndex >= 0 && CorrectAnswerIndex < QuestionVM.Answers.Count)
+            {
+                // Reset all to false, then set the correct one
+                foreach (var answer in QuestionVM.Answers)
+                {
+                    answer.IsCorrect = false;
+                }
+                QuestionVM.Answers[CorrectAnswerIndex.Value].IsCorrect = true;
+            }
+
             // Validate at least 2 answers are provided
             int validAnswers = 0;
             bool hasCorrectAnswer = false;

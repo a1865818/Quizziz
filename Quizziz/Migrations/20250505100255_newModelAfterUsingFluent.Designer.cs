@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Quizziz.Data;
 
@@ -11,9 +12,11 @@ using Quizziz.Data;
 namespace Quizziz.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250505100255_newModelAfterUsingFluent")]
+    partial class newModelAfterUsingFluent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,19 +163,19 @@ namespace Quizziz.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2025, 5, 5, 19, 32, 53, 394, DateTimeKind.Local).AddTicks(6550),
                             Text = "What is the capital of France?"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2025, 5, 5, 19, 32, 53, 411, DateTimeKind.Local).AddTicks(7993),
                             Text = "What is 2 + 2?"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2025, 5, 5, 19, 32, 53, 411, DateTimeKind.Local).AddTicks(8014),
                             Text = "Who painted the Mona Lisa?"
                         });
                 });
@@ -214,7 +217,7 @@ namespace Quizziz.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2025, 5, 5, 19, 32, 53, 418, DateTimeKind.Local).AddTicks(5649),
                             Description = "Test your general knowledge!",
                             RandomizeQuestions = false,
                             Title = "General Knowledge Quiz"

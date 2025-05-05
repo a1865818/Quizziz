@@ -22,9 +22,28 @@ namespace Quizziz.Pages.Quizzes
             {
                 return NotFound();
             }
+
+            if (!attempt.CompletedAt.HasValue)
+            {
+                return RedirectToPage("./Take", new { id = attempt.QuizId });
+            }
+
             QuizAttempt = QuizAttemptViewModel.FromQuizAttempt(attempt);
             return Page();
         }
 
+        public async Task<IActionResult> OnPostAsync(int id)
+        {
+            var attempt = await _quizAttemptService.GetQuizAttemptAsync(id);
+            if (attempt == null)
+            {
+                return NotFound();
+            }
+            if (attempt.CompletedAt.HasValue)
+            {
+                return RedirectToPage("./Review", new { id = attempt.Id });
+            }
+            return RedirectToPage("./Take", new { id = attempt.QuizId });
+        }
     }
 }

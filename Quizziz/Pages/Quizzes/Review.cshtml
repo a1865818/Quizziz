@@ -66,10 +66,11 @@
                             </div>
                             @if (answer.IsCorrect)
                             {
-                                <span class="badge bg-success">Correct Answer</span>
+                                <span class="badge bg-success ms-2">Correct Answer</span>
                             }
                         </div>
                     </div>
+
                 }
             </div>
         </div>
@@ -77,6 +78,6 @@
 
     <div class="mt-4 d-flex justify-content-between">
         <a asp-page="./Index" class="btn btn-primary">Back to Quizzes</a>
-        <a asp-page="./Take" asp-route-id="@Model.QuizAttempt.QuizId" class="btn btn-success">Try Again</a>
+        <a asp-page="./Take" asp-route-id="@Model.QuizAttempt.QuizId" asp-route-clear="true" class="btn btn-success">Try Again</a>
     </div>
 </div>

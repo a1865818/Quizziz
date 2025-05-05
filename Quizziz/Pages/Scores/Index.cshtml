@@ -1,0 +1,91 @@
+﻿@page
+@model Quizziz.Pages.Scores.IndexModel
+@{
+	ViewData["Title"] = "Scores";
+}
+
+
+<div class="container py-4">
+    <h1 class="mb-4 ">Quiz Scores</h1>
+
+    @if (!Model.QuizAttempts.Any())
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> You haven't completed any quizzes yet.
+            <a asp-page="/Quizzes/Index" class="alert-link">Take a quiz</a> to see your scores here.
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="card-header app-header text-white">
+                <h5 class="mb-0">Your Quiz History</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Quiz</th>
+                            <th>Score</th>
+                            <th>Completed</th>
+                            <th>Duration</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var attempt in Model.QuizAttempts)
+                        {
+                            <tr>
+                                <td>
+                                    @if (Model.QuizTitles.TryGetValue(attempt.QuizId, out string title))
+                                    {
+                                        @title
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Unknown Quiz</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="score-badge @(attempt.Score >= 70 ? "bg-success" : (attempt.Score >= 50 ? "bg-warning" : "bg-danger"))">
+                                            @attempt.Score%
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>@attempt.CompletedAt.ToString("MMM dd, yyyy, HH:mm")</td>
+                                <td>@attempt.Duration.ToString(@"hh\:mm\:ss")</td>
+                                <td>
+                                    <a asp-page="/Quizzes/Review" asp-route-id="@attempt.Id" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye"></i> Review
+                                    </a>
+                                    <a asp-page="/Quizzes/Take" asp-route-id="@attempt.QuizId" class="btn btn-sm btn-outline-success">
+                                        <i class="bi bi-arrow-repeat"></i> Retry
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a asp-page="/Quizzes/Index" class="btn btn-primary">
+                <i class="bi bi-play-fill"></i> Take Another Quiz
+            </a>
+        </div>
+    }
+</div>
+
+<style>
+    .score-badge {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 999px;
+        color: white;
+        font-weight: bold;
+        min-width: 3rem;
+        text-align: center;
+    }
+</style>

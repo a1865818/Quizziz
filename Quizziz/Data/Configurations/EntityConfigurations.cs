@@ -70,7 +70,7 @@ namespace Quizziz.Data.Configurations
             builder.HasOne(qq => qq.Question)
                    .WithMany()
                    .HasForeignKey(qq => qq.QuestionId)
-                   .OnDelete(DeleteBehavior.Restrict); // Preserve questions even if removed from quiz
+                   .OnDelete(DeleteBehavior.Restrict); 
         }
     }
 
@@ -88,13 +88,15 @@ namespace Quizziz.Data.Configurations
             builder.HasOne(qa => qa.Quiz)
                    .WithMany()
                    .HasForeignKey(qa => qa.QuizId)
-                   .OnDelete(DeleteBehavior.Restrict);
+                    .OnDelete(DeleteBehavior.Cascade);
+
 
             builder.HasMany(qa => qa.Responses)
                    .WithOne(qr => qr.QuizAttempt)
                    .HasForeignKey(qr => qr.QuizAttemptId)
                    .OnDelete(DeleteBehavior.Cascade);
         }
+
     }
 
     public class QuizResponseConfiguration : IEntityTypeConfiguration<QuizResponse>

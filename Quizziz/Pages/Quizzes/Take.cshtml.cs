@@ -60,7 +60,7 @@ namespace Quizziz.Pages.Quizzes
                     // Check if time limit has expired
                     if (QuizAttempt.HasTimeLimit && QuizAttempt.EndTime.HasValue && DateTime.Now > QuizAttempt.EndTime.Value)
                     {
-                        // Only complete the quiz if it's not already completed
+                        //If the time limit has expired, complete the quiz attempt
                         if (!attempt.CompletedAt.HasValue)
                         {
                             await _quizAttemptService.CompleteQuizAttemptAsync(sessionAttemptId.Value);
@@ -77,7 +77,7 @@ namespace Quizziz.Pages.Quizzes
                 }
                 else
                 {
-                    // Clear the session if the attempt is for a different quiz
+                    //// Clear the session if the attempt is for a different quiz
                     HttpContext.Session.Remove("CurrentQuizAttemptId");
                     HttpContext.Session.Remove("CurrentQuestionIndex");
                 }

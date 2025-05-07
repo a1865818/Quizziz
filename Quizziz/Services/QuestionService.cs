@@ -45,7 +45,7 @@ namespace Quizziz.Services
             {
                 existingQuestion.Text = updatedQuestion.Text;
                 existingQuestion.UpdatedAt = System.DateTime.Now;
-                // Do not modify CreatedAt
+               
                 _context.Questions.Update(existingQuestion);
                 await _context.SaveChangesAsync();
             }

@@ -23,6 +23,7 @@ namespace Quizziz.Pages.Quizzes
                 return NotFound();
             }
 
+            // if the attempt is not having value, redirect to the Take page to do the quiz
             if (!attempt.CompletedAt.HasValue)
             {
                 return RedirectToPage("./Take", new { id = attempt.QuizId });

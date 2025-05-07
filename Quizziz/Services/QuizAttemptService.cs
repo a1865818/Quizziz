@@ -32,7 +32,7 @@ namespace Quizziz.Services
                 Score = null
             };
 
-            // Determine question order and store it
+           
             var questionIds = quiz.QuizQuestions.Select(qq => qq.QuestionId).ToList();
 
             if (quiz.RandomizeQuestions)

@@ -32,65 +32,6 @@ namespace Quizziz.ViewModels
             }
         }
 
-        //public static QuizAttemptViewModel FromQuizAttempt(QuizAttempt attempt)
-        //{
-        //    var viewModel = new QuizAttemptViewModel
-        //    {
-        //        Id = attempt.Id,
-        //        QuizId = attempt.QuizId,
-        //        QuizTitle = attempt.Quiz?.Title,
-        //        IsCompleted = attempt.CompletedAt.HasValue,
-        //        Score = attempt.Score,
-        //        StartedAt = attempt.StartedAt,
-        //        CompletedAt = attempt.CompletedAt,
-        //        HasTimeLimit = attempt.Quiz?.TimeLimit.HasValue ?? false,
-        //        TimeLimit = attempt.Quiz?.TimeLimit,
-        //        Questions = new List<QuizQuestionAttemptViewModel>()
-        //    };
-
-        //    if (attempt.Quiz?.QuizQuestions != null)
-        //    {
-        //        var quizQuestions = attempt.Quiz.QuizQuestions;
-
-        //        // Apply randomization if needed
-        //        if (attempt.Quiz.RandomizeQuestions)
-        //        {
-        //            quizQuestions = quizQuestions.OrderBy(q => Guid.NewGuid()).ToList();
-        //        }
-        //        else
-        //        {
-        //            quizQuestions = quizQuestions.OrderBy(q => q.Order).ToList();
-        //        }
-
-        //        foreach (var quizQuestion in quizQuestions)
-        //        {
-        //            var response = attempt.Responses?.FirstOrDefault(r => r.QuestionId == quizQuestion.QuestionId);
-
-        //            var questionViewModel = new QuizQuestionAttemptViewModel
-        //            {
-        //                QuestionId = quizQuestion.QuestionId,
-        //                QuestionText = quizQuestion.Question?.Text,
-        //                Answers = quizQuestion.Question?.Answers
-        //                    .Select(a => new QuizAnswerAttemptViewModel
-        //                    {
-        //                        AnswerId = a.Id,
-        //                        AnswerText = a.Text,
-        //                        IsSelected = response?.SelectedAnswerId == a.Id,
-        //                        IsCorrect = a.IsCorrect  // Make sure this is being set correctly
-        //                    })
-        //                    .ToList() ?? new List<QuizAnswerAttemptViewModel>(),
-        //                SelectedAnswerId = response?.SelectedAnswerId,
-        //                IsAnswered = response != null,
-        //                IsCorrect = response?.IsCorrect ?? false  // This might need debugging as well
-        //            };
-
-        //            viewModel.Questions.Add(questionViewModel);
-        //        }
-        //    }
-
-        //    return viewModel;
-        //}
-
         public static QuizAttemptViewModel FromQuizAttempt(QuizAttempt attempt)
         {
             var viewModel = new QuizAttemptViewModel
@@ -117,7 +58,7 @@ namespace Quizziz.ViewModels
                     var questionOrder = attempt.QuestionOrder.Split(',').Select(int.Parse).ToList();
                     orderedQuestions = new List<QuizQuestion>();
 
-                    // Reconstruct the quiz questions in the stored order
+                    // Reconstruct the quiz questions in the stored order to handling random questions
                     foreach (var questionId in questionOrder)
                     {
                         var question = attempt.Quiz.QuizQuestions.FirstOrDefault(qq => qq.QuestionId == questionId);
